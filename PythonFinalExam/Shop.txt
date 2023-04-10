@@ -1,0 +1,18 @@
+Welcome to the shop
+
+# Weapon description: name, damage, price
+weapon1:knife,10,50  
+weapon2:rifle,30,150 
+weapon3:pistol,20,100 
+weapon4:bomb,50,300 
+weapon5:sniper,40,250 
+
+# Key description: code, price
+key:0,300
+
+# HealingPad description: health +50, price 100
+5 
+
+# Armour description: durability, price
+armour1:2,200 
+armour2:3,400

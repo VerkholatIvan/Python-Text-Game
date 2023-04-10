@@ -1,0 +1,17 @@
+Welcome to King's Landing
+This town belongs to crazy queen Cersei Lannister
+
+# Enemy description: name, damage, health
+Qyburn,70,150
+
+# Point description: points for killing the enemy
+5
+
+# Weapon description: name, damage, price
+shotgun,35,200
+
+# Money description: 
+250
+
+# Treasure description: code, point
+1,4

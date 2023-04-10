@@ -1,0 +1,20 @@
+Welcome to Gulltown
+The major port city of the Vale of Arryn
+
+# Enemy description: name, damage, health
+Khal Drogo,40,200
+
+# Point description: points for killing the enemy
+4
+
+# Weapon description: name, damage, price
+pistol,15,80
+
+# Money description: 
+100
+
+# HealingPad description
+1
+
+# Key description: code, price
+1,350

@@ -1,0 +1,19 @@
+Welcome to Oldtown
+The largest port and city in the Seven Kingdoms
+
+# Enemy description: name, damage, health
+John Snow,5,100
+
+# Point description: points for killing the enemy
+2
+
+# Weapon description: name, damage, price
+shovel,15,80
+
+# Money description: 
+50
+
+# Treasure description: code, point
+0,3
+
+

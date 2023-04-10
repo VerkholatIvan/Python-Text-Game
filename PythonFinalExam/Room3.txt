@@ -1,0 +1,17 @@
+Welcome to Lannisport
+The largest settlement in the westerlands
+
+# Enemy description: name, damage, health
+Rob Stark,20,100
+
+# Point description: points for killing the enemy
+3
+
+# Weapon description: name, damage, price
+pistol,15,80
+
+# Money description: 
+100
+
+# HealingPad description
+1
