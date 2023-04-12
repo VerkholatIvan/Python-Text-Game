@@ -57,6 +57,18 @@ with open("Shop.txt", "r") as dev_shop_update_key:
 
 #----------------------------
 
+shop_heal = []
+with open("Shop.txt", "r") as dev_shop_update_heal:
+    lines = np.arange(12, 14, 1)
+    i = 0
+    for line in dev_shop_update_heal:
+        if i in lines:
+            shop_heal.append(line.strip())
+        i += 1
+    heal_left = int(shop_heal[1])
+
+#----------------------------
+
 shop_armour = []
 with open("Shop.txt", "r") as dev_shop_update_armour:
     lines = np.arange(15, 18, 1)
@@ -66,40 +78,41 @@ with open("Shop.txt", "r") as dev_shop_update_armour:
             shop_armour.append(line.strip())
         i += 1
 
+
 # ---------------------------------------------------------------
 # DEF MAIN FUNCTIONS    \(￣︶￣*\))
 # ---------------------------------------------------------------
 
 
-def Room1():
-    # my_file = open("Room1.txt", "r")
+def Room1(): # enter the room No1
     pass
 #----------------------------
-def Room2():
+def Room2(): # enter the room No2
     pass
 #----------------------------
-def Room3():
+def Room3(): # enter the room No3
     pass
 #----------------------------
-def Room4():
+def Room4(): # enter the room No4
     pass
 #----------------------------
-def Shop():
+def Shop(): # enter the shop
     global money, health
-    global shop_weapon, shop_keys, shop_armour
+    global shop_weapon, shop_keys, shop_armour, shop_heal
 
     dev_shop = open("Shop.txt", "r")
     print("\n", dev_shop.readline())
 
-    print("1) Weapons\n" +
-          "2) Key\n" + 
-          "3) HealingPad\n" + 
-          "4) Armour\n" +
-          "5) Continue the adventure")
-
     play_shop = True
 
     while play_shop:
+        
+        print("1) Weapons\n" +
+            "2) Key\n" + 
+            "3) HealingPad\n" + 
+            "4) Armour\n" +
+            "5) Continue the adventure")
+        
         user_buy = int(input("\nChoose what you would like to buy, stranger\n>> "))
         print("\n")
 
@@ -164,11 +177,12 @@ def Shop():
 
             else: print("\nThere is no such an item\nLook wisely")
 
+
         elif user_buy == 2: # buy keys
             print(*shop_keys, sep="\n")
-            user_key_choose = input("Would you like to buy this key? (yes/no) or (1/0)\n>> ")
+            user_key_choose = input("Would you like to buy this key? (y/n)\n>> ")
 
-            if user_key_choose == "yes" or user_key_choose == "1":
+            if user_key_choose == "y":
                 if money >= 300:
                     money -= 300
                     change_labels(health, money, point)
@@ -179,14 +193,38 @@ def Shop():
                 else:
                     print("Not enough cash")
 
-            elif user_key_choose == "no" or user_key_choose == "0":
+            elif user_key_choose == "n":
                 print("As you wish!\nBut still take a look on the other items")
             
             else:
                 print("Did not understand you")
                     
 
-        # elif user_buy == 3: # HealingPad
+        elif user_buy == 3: # HealingPad
+            global heal_left
+            
+            if heal_left > 0:
+                print(*shop_heal[0], sep="")
+                print("HealingPads left: ", heal_left)
+                user_heal_choose = input("\nWould you like to buy the HelingPad? (y/n)\n>> ")
+
+                if user_heal_choose == "y":
+                    if money >= 100:
+                        money -= 100
+                        health += 50
+                        change_labels(health, money, point)
+                        heal_left -= 1
+
+                        print("Thanks for purchase")
+                    else:
+                        print("Not enough cash")
+
+                elif user_heal_choose == "n":
+                    print("Be careful then!")
+                
+                else: print("Didn't understand you")
+
+            else: print("Sorry but you have bought all I had")
             
 
         elif user_buy == 4: # Armour
@@ -223,9 +261,9 @@ def Shop():
             print("Thanks for visiting the shop\n")
             play_shop = False
             
+
         else: print("\nDid not get what you have wanted, repeat please")
 
-    
     
     pass
 #----------------------------
@@ -233,7 +271,7 @@ def Inventory(): # show inventory
     global inventory
 
     for key in inventory.keys():
-        print("List of ", key)
+        print("\nList of ", key)
         for item in inventory[key]:
             print(item)
 
