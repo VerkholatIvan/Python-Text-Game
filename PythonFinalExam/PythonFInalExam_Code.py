@@ -6,7 +6,7 @@ main_window = tkinter.Tk()
 main_window.title("Text based adventure game")
 main_window.geometry("400x400")
 # name = input("Enter your name >> ")
-name = "Ivan"
+name = "Eevan"
 # money = random.randint(50, 310)
 money = 500
 point = 0
@@ -93,7 +93,7 @@ with open("Shop.txt", "r") as dev_shop_update_armour:
 
 
 def Room1(): # enter the room No1
-    global point, opened_chest1
+    global health, point, opened_chest1
 
     print("\n------------------------")
     r1 = open("Room1.txt", "r").readlines() 
@@ -157,7 +157,7 @@ def Room1(): # enter the room No1
             else: print("\nWrong input\n")
 
 
-            if the_weapon_exist == False:
+            if the_weapon_exist == False: # do not let the user fight without the weapon
                 print("You CANNOT fight without a weapon\n")
 
 
@@ -168,31 +168,36 @@ def Room1(): # enter the room No1
             chest_code = r1[16]
             
             i = 0
+            flag = True
             
             if opened_chest1 == False: # checks if the chest was already opened
-                if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory["Keys"])): 
-                        if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
-                            print("You have the key open the chest\n")
-                            user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
-                                
-                            if user_open_chest == "y":
-                                del inventory["Keys"][i]
-                                point += int(chest_code[2])
-                                change_labels(health, money, point)
-                                opened_chest1 = True
-                                print("\nYou have successfully opened the chest\n") 
-                                break                                        
+                
+                while flag == True:
+                
+                    if len(inventory["Keys"]) != 0:
+                        for i in range(len(inventory["Keys"])): 
+                            if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
+                                print("You have the key open the chest\n")
+                                user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
+                                    
+                                if user_open_chest == "y":
+                                    del inventory["Keys"][i]
+                                    point += int(chest_code[2])
+                                    change_labels(health, money, point)
+                                    opened_chest1 = True
+                                    print("\nYou have successfully opened the chest\n") 
+                                    flag = False                                       
 
-                            elif user_open_chest == "n":
-                                print("")
+                                elif user_open_chest == "n":
+                                    print("")
+                                    flag = False
+
+                        
+                            else: i += 1
 
                     
-                        else: i += 1
 
-                    print("\nYou don't have a key to this chest\n")
-
-                else: print("\nYou don't have any keys\n")
+                else: print("\nYou don't have a key to this chest\n")
 
             else: print("\nThe chest is already opened\n")
 
@@ -208,7 +213,7 @@ def Room1(): # enter the room No1
     pass
 #----------------------------
 def Room2(): # enter the room No2
-    global point, opened_chest2
+    global health, point, opened_chest2
     
     r2 = open("Room2.txt", "r").readlines() 
     print("\n------------------------")
@@ -216,6 +221,9 @@ def Room2(): # enter the room No2
           r2[1],
           "\n", r2[3], r2[4])
 
+    enemy = r2[4].strip().split(",") # enemy info
+    armour = 1 # user's armour
+    
     play_room2 = True
 
     while play_room2:
@@ -240,6 +248,7 @@ def Room2(): # enter the room No2
             for item in inventory["Weapons"]: 
                 if item["name"] == user_weapon:
                     print("You have chosen ", item, " as a weapon\n")
+                    weapon = item["damage"]
                     the_weapon_exist = True
 
             if the_weapon_exist == False: # checks for equiped weapon
@@ -259,6 +268,7 @@ def Room2(): # enter the room No2
                     for item in inventory["Armours"]:
                         if item["Durability"] == user_armour:
                             print("You have chosen ", item, " as an armour\n")
+                            armour = inventory["Armours"]["Durability"]
                             the_armour_exist = True
 
                     if the_armour_exist == False: # checks for equiped armour
@@ -275,7 +285,8 @@ def Room2(): # enter the room No2
                 print("You CANNOT fight without a weapon\n")
 
             
-            # elif the_weapon_exist == True:
+            elif the_weapon_exist == True:
+                battle(r2, enemy, weapon, armour)
 
 
             
@@ -286,31 +297,37 @@ def Room2(): # enter the room No2
             chest_code = r2[16]
             
             i = 0
+            flag = True
             
             if opened_chest2 == False: # checks if the chest was already opened
                 if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory["Keys"])): 
-                        if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
-                            print("You have the key open the chest\n")
-                            user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
-                                
-                            if user_open_chest == "y":
-                                del inventory["Keys"][i]
-                                point += int(chest_code[2])
-                                change_labels(health, money, point)
-                                opened_chest2 = True
-                                print("\nYou have successfully opened the chest\n")
-                                break
+                    
+                    while flag == True:
+                    
+                        for i in range(len(inventory["Keys"])): 
+                            if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
+                                print("You have the key open the chest\n")
+                                user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
+                                    
+                                if user_open_chest == "y":
+                                    del inventory["Keys"][i]
+                                    point += int(chest_code[2])
+                                    change_labels(health, money, point)
+                                    opened_chest2 = True
+                                    print("\nYou have successfully opened the chest\n")
+                                    flag = False
 
-                            elif user_open_chest == "n":
-                                print("")
+                                elif user_open_chest == "n":
+                                    print("")
+                                    flag = False
 
 
-                        else: i += 1
+                            else: i += 1
 
-                    print("\nYou don't have a key to this chest\n") ## showing even after opening
+                        
 
-                else: print("\nYou don't have any keys\n")
+                else: print("\nYou don't have a key to this chest\n") 
+                    
 
             else: print("\nThe chest is already opened\n")
 
@@ -509,31 +526,35 @@ def Room4(): # enter the room No4
             chest_code = r4[19]
             
             i = 0
+            flag = True
             
             if opened_chest4 == False: # checks if the chest was already opened
                 if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory["Keys"])): 
-                        if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
-                            print("You have the key open the chest\n")
-                            user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
-                                
-                            if user_open_chest == "y":
-                                del inventory["Keys"][i]
-                                point += int(chest_code[2])
-                                change_labels(health, money, point)
-                                opened_chest4 = True
-                                print("\nYou have successfully opened the chest\n")
-                                break
-                                                    
-                            elif user_open_chest == "n":
-                                print("")
+                    
+                    while flag == True:
 
+                        for i in range(len(inventory["Keys"])): 
+                            if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
+                                print("You have the key open the chest\n")
+                                user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
+                                    
+                                if user_open_chest == "y":
+                                    del inventory["Keys"][i]
+                                    point += int(chest_code[2])
+                                    change_labels(health, money, point)
+                                    opened_chest4 = True
+                                    print("\nYou have successfully opened the chest\n")
+                                    flag = False
+                                                        
+                                elif user_open_chest == "n":
+                                    print("")
+                                    flag = False
 
-                        else: i += 1
+                            else: i += 1
 
-                    print("\nYou don't have a key to this chest\n") ## showing even after opening
+                
 
-                else: print("\nYou don't have any keys\n")
+                else: print("\nYou don't have a key to this chest\n")
 
             else: print("\nThe chest is already opened\n")
 
@@ -754,7 +775,7 @@ def add_item(text,type): # add item to the inventory
         inventory["Weapons"].append({"name":text_list[0], "damage":int(text_list[1]), "price":int((text_list[2]))})
 
     elif type[0].lower() == "k": # add to keys
-        inventory["Keys"].append({"code":text_list[0], "price":int(text_list[1])})
+        inventory["Keys"].append({"code":int(text_list[0]), "price":int(text_list[1])})
 
     elif type[0].lower() == "a": # add to armours
         inventory["Armours"].append({"Durability":int(text_list[0]), "price":int(text_list[1])})
@@ -766,6 +787,34 @@ def change_labels(health, money, point): # change the values on the user window,
     health_label.configure(text= "Health: "+str(health))
     money_label.configure(text= "Money: "+str(money))
     point_label.configure(text= "Points: "+str(point))
+#----------------------------
+def battle(my_file, enemy, weapon, armour): # battle function
+    global health, point, money
+    
+    enemy_hp = int(enemy[-1])
+    enemy_dmg = int(enemy[1])
+
+    while (enemy_hp > 0) or (health > 0):
+        enemy_hp -= weapon
+        health -= (enemy_dmg//armour)
+
+        if enemy_hp <= 0: # user has won
+            print("\nYou have defeated the enemy\n")
+            point += int(my_file[7])
+            money += int(my_file[13])
+            change_labels(health, money, point)
+            add_item(my_file[10], "w")
+            break
+
+        elif health <= 0: # user has lost
+            print("\nYou lost the battle\n")
+            health = 0
+            point -= 2
+            change_labels(health, money, point)
+            break
+            
+
+
 
 
 # ---------------------------------------------------------------
