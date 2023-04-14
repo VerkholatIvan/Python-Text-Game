@@ -1,7 +1,9 @@
 import tkinter
+from tkinter import messagebox
 import random
 import numpy as np
 import time
+
 
 main_window = tkinter.Tk()
 main_window.title("Text based adventure game")
@@ -24,9 +26,6 @@ enemy_alive3 = True
 
 inventory = {"Weapons":[], "Keys":[], "Armours":[]}
 
-# inventory = {"Weapons":[{"name":"fork", "damage":15, "price":10}, {"name":"fist", "damage":3, "price":-1}], 
-#              "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
-#              "Armours":[{"Durability":2, "price":50}]}
 
 top_frame = tkinter.Frame(main_window)
 top_frame.pack(anchor = "n")
@@ -39,6 +38,7 @@ money_label = tkinter.Label(top_frame, text = "Money: "+str(money), font= ("Cali
 money_label.grid(row=0, column=1)
 point_label = tkinter.Label(top_frame, text = "Points: "+str(point), font= ("Calibri, 16"))
 point_label.grid(row=1, column=1)
+
 
 bottom_frame = tkinter.Frame(main_window)
 bottom_frame.pack(anchor= "s")
@@ -120,7 +120,7 @@ def Room1(): # enter the room No1
     # figting enemy variables
     armour_dur = 1 # user's armour
     weapon_dmg = 0
-   
+
 
     print("\n------------------------")
     print(r1[0], r1[1])
@@ -247,12 +247,12 @@ def Room2(): # enter the room No2
             if enemy_alive2:
                 if choose_equipment(r2, enemy_info2, weapon_dmg, armour_dur) == True:
                     enemy_alive2 = False
-              
+            
                 else: play_room2 = False
 
             else: print("\nYou have already defeated the enemy in this room\n")
 
-  
+
             pass
 
 
@@ -392,7 +392,7 @@ def Room4(): # enter the room No4
     # figting enemy variables
     armour_dur = 1 # user's armour
     weapon_dmg = 0
-   
+
 
     print("\n------------------------")
     print(r4[0], r4[1])
@@ -470,7 +470,7 @@ def Room4(): # enter the room No4
 
 
         elif user_room_choose == "3": # use healingPad
-            use_health = input("Do you waant to use HealthPad? (y/n)\n>> ")
+            use_health = input("Do you want to use HealthPad? (y/n)\n>> ")
 
             if use_health.lower() == "y":
                 if healPad > 0:
@@ -551,7 +551,7 @@ def Shop(): # enter the shop
                     else:
                         print("\nNot enough cash\n")
 
-             
+            
                 elif user_weapon_choose == "3" or user_weapon_choose == "weapon3":
                     if money >= 100:    
                         money -= 100
@@ -563,7 +563,7 @@ def Shop(): # enter the shop
                     else:
                         print("\nNot enough cash\n")
 
-                       
+                    
                 elif user_weapon_choose == "4" or user_weapon_choose == "weapon4":
                     if money >= 300:
                         money -= 300
@@ -575,7 +575,7 @@ def Shop(): # enter the shop
                     else:
                         print("\nNot enough cash\n")
 
-           
+        
                 elif user_weapon_choose == "5" or user_weapon_choose == "weapon5":
                     if money >= 250:    
                         money -= 250
@@ -669,8 +669,6 @@ def Shop(): # enter the shop
                         print("\nNot enough cash\n")
             
             except: print("\nThere's no such an armour\n")
-            # else:
-            #     print("\nI do not have the thing you are asking for\n")
 
 
         elif user_buy == "5": # sell items
@@ -905,6 +903,18 @@ def animation_loading(): # loading animation
 
 
 # ---------------------------------------------------------------
+# LOSE/WIN CHECKERS     (￣m￣）
+# ---------------------------------------------------------------
+
+
+if point >= 10:
+    messagebox.showinfo("The result of the game", "You have won! ( •̀ ω •́ )y")
+
+elif point < 0:
+    messagebox.showinfo("The result of the game", "You have lost 〒▽〒")
+
+
+# ---------------------------------------------------------------
 # BUTTONS    (‾◡◝)
 # ---------------------------------------------------------------
 
@@ -926,7 +936,6 @@ Shp_btn.grid(row=1, column=2)
 
 Inv_btn = tkinter.Button(bottom_frame, text= "Inventory", command= Inventory)
 Inv_btn.grid(row=0, column=2)
-
 
 
 main_window.mainloop()
