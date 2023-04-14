@@ -2,9 +2,10 @@
 
 Necessary Libraries:
   - tkinter (interaction window to enter different rooms, shop and inventory)
+  - from tkinter import messagebox (used to tell the user the result for the game )
   - random
   - numpy
-  - time (was added for animation, while waiting foe battle results)
+  - time (was added for animation, while waiting for battle results)
   
   
 How to play:
