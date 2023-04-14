@@ -10,3 +10,5 @@ Necessary Libraries:
 How to play:
 Game itself is going inside the terminal, but to enter different rooms it is necessary to press buttons in the window.
 Not to break the game the user must choose exit option in the current room before entering another. The "Inventory" button will not affect an error, but may look confusing when it is called inside the room. 
+
+GitHub Repository Link: https://github.com/VerkholatIvan/Python-Text-Game
