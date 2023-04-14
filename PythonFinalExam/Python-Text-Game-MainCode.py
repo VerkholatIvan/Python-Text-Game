@@ -6,10 +6,8 @@ import time
 main_window = tkinter.Tk()
 main_window.title("Text based adventure game")
 main_window.geometry("400x400")
-# name = input("Enter your name >> ")
-name = "Eevan"
-# money = random.randint(50, 310)
-money = 500
+name = input("Enter your name >> ")
+money = random.randint(50, 310)
 point = 0
 health = 100
 
@@ -24,11 +22,11 @@ enemy_alive1 = True
 enemy_alive2 = True 
 enemy_alive3 = True 
 
-# inventory = {"Weapons":[], "Keys":[], "Armours":[]}
+inventory = {"Weapons":[], "Keys":[], "Armours":[]}
 
-inventory = {"Weapons":[{"name":"fork", "damage":15, "price":10}, {"name":"fist", "damage":3, "price":-1}], 
-             "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
-             "Armours":[{"Durability":2, "price":50}]}
+# inventory = {"Weapons":[{"name":"fork", "damage":15, "price":10}, {"name":"fist", "damage":3, "price":-1}], 
+#              "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
+#              "Armours":[{"Durability":2, "price":50}]}
 
 top_frame = tkinter.Frame(main_window)
 top_frame.pack(anchor = "n")
@@ -183,6 +181,7 @@ def Room1(): # enter the room No1
                                     change_labels(health, money, point)
                                     opened_chest1 = True
                                     print("\nYou have successfully opened the chest\n") 
+                                    print("\n+", chest_code[2], "points\n")
                                     flag = False                                       
 
                                 elif user_open_chest == "n":
@@ -194,7 +193,7 @@ def Room1(): # enter the room No1
 
                     
 
-                else: print("\nYou don't have a key to this chest\n")
+                    else: print("\nYou don't have a key to this chest\n")
 
             else: print("\nThe chest is already opened\n")
 
@@ -216,11 +215,8 @@ def Room2(): # enter the room No2
     r2 = open("Room2.txt", "r").readlines() 
     
     # figting enemy variables
-    # enemy_info2 = r2[4].strip().split(",") # enemy info
     armour_dur = 1 # user's armour
     weapon_dmg = 0
-   
-
 
     print("\n------------------------")
     print(r2[0], r2[1])
@@ -282,6 +278,7 @@ def Room2(): # enter the room No2
                                     change_labels(health, money, point)
                                     opened_chest2 = True
                                     print("\nYou have successfully opened the chest\n")
+                                    print("\n+", chest_code[2], "points\n")
                                     flag = False
 
                                 elif user_open_chest == "n":
@@ -360,7 +357,9 @@ def Room3(): # enter the room No3
 
             if use_health.lower() == "y":
                 if healPad > 0:
-                    health += 50
+                    if (health + 50) <= 100:
+                        health += 50
+                    else: health = 100
                     change_labels(health, money, point)
                     healPad -= 1
                     print("\nYou have gained +50 health\n")
@@ -475,7 +474,9 @@ def Room4(): # enter the room No4
 
             if use_health.lower() == "y":
                 if healPad > 0:
-                    health += 50
+                    if (health + 50) <= 100:
+                        health += 50
+                    else: health = 100
                     change_labels(health, money, point)
                     healPad -= 1
                     print("\nYou have gained +50 health\n")
@@ -519,67 +520,74 @@ def Shop(): # enter the shop
 
         
         user_buy = input("\nChoose what you would like to buy, stranger\n>> ")
+        print()
 
+        
         if user_buy == "1": # buy weapons
             print(*shop_weapon, sep="\n")
-            user_weapon_choose = input("\nWhich of them you liked the most?\n>> ")
-            if user_weapon_choose == "1" or user_weapon_choose == "weapon1":
-                if money >= 50:
-                        money -= 50
+            user_weapon_choose = input("\nWhich of them you liked the most? <Enter a weapon number>\n>> ")
+            
+            try:
+                if user_weapon_choose == "1" or user_weapon_choose == "weapon1":
+                    if money >= 50:
+                            money -= 50
+                            change_labels(health, money, point)
+                            add_item("knife,10,50", "w")
+                            shop_weapon.remove("weapon1:knife,10,50")
+
+                            print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
+
+
+                elif user_weapon_choose == "2" or user_weapon_choose == "weapon2":
+                    if money >= 150:
+                        money -= 150
                         change_labels(health, money, point)
-                        add_item("knife,10,50", "w")
-                        shop_weapon.remove("weapon1:knife,10,50")
+                        add_item("rifle,30,150", "w")
+                        shop_weapon.remove("weapon2:rifle,30,150")
 
                         print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
+                    else:
+                        print("\nNot enough cash\n")
 
-            elif user_weapon_choose == "2" or user_weapon_choose == "weapon2":
-                if money >= 150:
-                    money -= 150
-                    change_labels(health, money, point)
-                    add_item("rifle,30,150", "w")
-                    shop_weapon.remove("weapon2:rifle,30,150")
+             
+                elif user_weapon_choose == "3" or user_weapon_choose == "weapon3":
+                    if money >= 100:    
+                        money -= 100
+                        change_labels(health, money, point)
+                        add_item("pistol,20,100", "w")
+                        shop_weapon.remove("weapon3:pistol,20,100")
 
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
+                        print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
 
-            elif user_weapon_choose == "3" or user_weapon_choose == "weapon3":
-                if money >= 100:    
-                    money -= 100
-                    change_labels(health, money, point)
-                    add_item("pistol,20,100", "w")
-                    shop_weapon.remove("weapon3:pistol,20,100")
+                       
+                elif user_weapon_choose == "4" or user_weapon_choose == "weapon4":
+                    if money >= 300:
+                        money -= 300
+                        change_labels(health, money, point)
+                        add_item("bomb,50,300", "w")
+                        shop_weapon.remove("weapon4:bomb,50,300")
 
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
-                
-            elif user_weapon_choose == "4" or user_weapon_choose == "weapon4":
-                if money >= 300:
-                    money -= 300
-                    change_labels(health, money, point)
-                    add_item("bomb,50,300", "w")
-                    shop_weapon.remove("weapon4:bomb,50,300")
+                        print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
 
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
-                
-            elif user_weapon_choose == "5" or user_weapon_choose == "weapon5":
-                if money >= 250:    
-                    money -= 250
-                    change_labels(health, money, point)
-                    add_item("sniper,40,250", "w")
-                    shop_weapon.remove("weapon5:sniper,40,250")
+           
+                elif user_weapon_choose == "5" or user_weapon_choose == "weapon5":
+                    if money >= 250:    
+                        money -= 250
+                        change_labels(health, money, point)
+                        add_item("sniper,40,250", "w")
+                        shop_weapon.remove("weapon5:sniper,40,250")
 
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
+                        print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
 
-
-            else: print("\nThere is no such an item\nLook wisely")
+            except: print("\nThere's no such a weapon\n")
 
 
         elif user_buy == "2": # buy keys
@@ -613,7 +621,10 @@ def Shop(): # enter the shop
                 if user_heal_choose == "y":
                     if money >= 100:
                         money -= 100
-                        health += 50
+                        if (health + 50) <= 100:
+                            health += 50
+                        else: 
+                            health = 100
                         change_labels(health, money, point)
                         heal_left -= 1 
 
@@ -633,30 +644,33 @@ def Shop(): # enter the shop
             print(*shop_armour, sep="\n")
             user_armour_choose = input("\nWhich armour do you prefer?\n>> ")
 
-            if user_armour_choose == "1": # choose armour 1
-                if money >= 200:
-                    money -= 200
-                    change_labels(health, money, point)
-                    add_item("2,200", "a")
-                    shop_armour.remove("armour1:2,200")
+            try:
+                if user_armour_choose == "1": # choose armour 1
+                    if money >= 200:
+                        money -= 200
+                        change_labels(health, money, point)
+                        add_item("2,200", "a")
+                        shop_armour.remove("armour1:2,200")
 
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
-
-            elif user_armour_choose == "2": # choose armour 2
-                if money >= 400:
-                    money -= 400
-                    change_labels(health, money, point)
-                    add_item("3,400", "a")
-                    shop_armour.remove("armour2:3,400")
-
-                    print("\nThanks for purchase\n")
-                else:
-                    print("\nNot enough cash\n")
+                        print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
             
-            else:
-                print("\nI do not have the thing you are asking for\n")
+        
+                elif user_armour_choose == "2": # choose armour 2
+                    if money >= 400:
+                        money -= 400
+                        change_labels(health, money, point)
+                        add_item("3,400", "a")
+                        shop_armour.remove("armour2:3,400")
+
+                        print("\nThanks for purchase\n")
+                    else:
+                        print("\nNot enough cash\n")
+            
+            except: print("\nThere's no such an armour\n")
+            # else:
+            #     print("\nI do not have the thing you are asking for\n")
 
 
         elif user_buy == "5": # sell items
@@ -737,8 +751,6 @@ def Shop(): # enter the shop
                 else: print("\nDid not understood you\n")
 
 
-
-
         elif user_buy == "6": # exit shop
             print("Thanks for visiting the shop\n")
             play_shop = False
@@ -790,6 +802,7 @@ def battle(my_file, enemy, weapon, armour): # battle function
     enemy_dmg = int(enemy[1])
 
     animation_loading()
+    print()
 
     while (enemy_hp > 0) or (health > 0):
         enemy_hp -= weapon
@@ -802,7 +815,7 @@ def battle(my_file, enemy, weapon, armour): # battle function
             add_item(my_file[10], "w")
             gained_weapon = my_file[10].strip().split(",")
 
-            print("You feel how you getting stronger\nYour mother will be prowd of you\nOh, it seems he dropped something!")
+            print("You feel how you getting stronger\nYour mother will be prowd of you\nOh, it seems he dropped something!\n")
             print("+", point, "points", "\n+", money, "money", "\nThe", gained_weapon[0], "was added to your inventory\n")
             return True
             break
@@ -832,7 +845,7 @@ def choose_equipment(my_file, enemy, weapon, armour): # choose weapon and armour
     for items in range(len(inventory["Weapons"])):
         print(inventory["Weapons"][items])
 
-    user_weapon = input("Enter the name of your weapon\n>> ")
+    user_weapon = input("\nEnter the name of your weapon\n>> ")
 
     for idx, item in enumerate(inventory["Weapons"]): 
         if item["name"] == user_weapon:
@@ -842,19 +855,18 @@ def choose_equipment(my_file, enemy, weapon, armour): # choose weapon and armour
             del inventory["Weapons"][idx]
 
     if the_weapon_exist == False: # checks for equiped weapon
-        print("There is no such a weapon")
+        print("\nThere is no such a weapon\n")
 
 
     # armour choose
     user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
 
     if user_use_armour == "y": 
-        print("Choose your armour by its durability:\n")
+        print("\nChoose your armour by its durability:\n")
         for items in range(len(inventory["Armours"])):
             print(inventory["Armours"][items])
 
-        # try:
-            user_armour = int(input("Enter the durability of your armour\n>> "))
+            user_armour = int(input("\nEnter the durability of your armour\n>> "))
             for idx, item in enumerate(inventory["Armours"]):
                 if item["Durability"] == user_armour:
                     print("You have chosen ", item, " as an armour\n")
@@ -865,7 +877,6 @@ def choose_equipment(my_file, enemy, weapon, armour): # choose weapon and armour
             if the_armour_exist == False: # checks for equiped armour
                 print("\nThere is no such an armour\n")
         
-        # except: print("\nThere is no such an armour\n")
 
     elif user_use_armour == "n": print("\nYou will fight without an armour\n")
 
