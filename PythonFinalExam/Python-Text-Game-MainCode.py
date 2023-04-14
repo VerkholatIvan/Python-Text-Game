@@ -24,7 +24,7 @@ enemy_alive1 = True
 enemy_alive2 = True 
 enemy_alive3 = True 
 
-inventory = {"Weapons":[], "Keys":[], "Armours":[]}
+inventory = {"Weapons":[{"name":"a", "damage":1000000000000000000000, "price": 0}], "Keys":[], "Armours":[]}
 
 
 top_frame = tkinter.Frame(main_window)
@@ -814,7 +814,7 @@ def battle(my_file, enemy, weapon, armour): # battle function
             gained_weapon = my_file[10].strip().split(",")
 
             print("You feel how you getting stronger\nYour mother will be prowd of you\nOh, it seems he dropped something!\n")
-            print("+", point, "points", "\n+", money, "money", "\nThe", gained_weapon[0], "was added to your inventory\n")
+            print("+", my_file[7], "points", "\n+", my_file[13], "money", "\nThe", gained_weapon[0], "was added to your inventory\n")
             return True
             break
         
