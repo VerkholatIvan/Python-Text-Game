@@ -1,6 +1,7 @@
 import tkinter
 import random
 import numpy as np
+import time
 
 main_window = tkinter.Tk()
 main_window.title("Text based adventure game")
@@ -17,10 +18,17 @@ opened_chest1 = False
 opened_chest2 = False
 opened_chest4 = False
 
-inventory = {"Weapons":[], "Keys":[], "Armours":[]}
-# inventory = {"Weapons":[{"name":"fork", "damage":5, "price":0}, {"name":"fist", "damage":3, "price":-1}], 
-#              "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
-#              "Armours":[{"Durability":1, "price":50}]}
+# variables for checking if the enemy is alive
+enemy_alive4 = True 
+enemy_alive1 = True 
+enemy_alive2 = True 
+enemy_alive3 = True 
+
+# inventory = {"Weapons":[], "Keys":[], "Armours":[]}
+
+inventory = {"Weapons":[{"name":"fork", "damage":15, "price":0}, {"name":"fist", "damage":3, "price":-1}], 
+             "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
+             "Armours":[{"Durability":2, "price":50}]}
 
 top_frame = tkinter.Frame(main_window)
 top_frame.pack(anchor = "n")
@@ -86,6 +94,20 @@ with open("Shop.txt", "r") as dev_shop_update_armour:
             shop_armour.append(line.strip())
         i += 1
 
+#----------------------------
+
+room1 = open ("Room1.txt", "r").readlines()
+enemy_info1 = room1[4].strip().split(",")
+
+room2 = open("Room2.txt", "r").readlines() 
+enemy_info2 = room2[4].strip().split(",")
+
+room3 = open("Room3.txt", "r").readlines() 
+enemy_info3 = room3[4].strip().split(",") 
+
+room4 = open("Room4.txt", "r").readlines()
+enemy_info4 = room4[4].strip().split(",")
+
 
 # ---------------------------------------------------------------
 # DEF MAIN FUNCTIONS    \(￣︶￣*\))
@@ -93,15 +115,30 @@ with open("Shop.txt", "r") as dev_shop_update_armour:
 
 
 def Room1(): # enter the room No1
-    global health, point, opened_chest1
+    global health, point, enemy_info1, enemy_alive1, opened_chest1
+
+    r1 = open("Room1.txt", "r").readlines() 
+    
+    # figting enemy variables
+    armour_dur = 1 # user's armour
+    weapon_dmg = 0
+   
 
     print("\n------------------------")
-    r1 = open("Room1.txt", "r").readlines() 
-    print(r1[0], 
-          r1[1],
-          "\n", r1[3], r1[4])
+    print(r1[0], r1[1])
+    
+    if enemy_alive1:
+        print(r1[3])
+        print("\033[A\033[A")
+        print(*enemy_info1, sep=",")
+        print()
+    else: print("There is no danger in these lands\n")
 
     play_room1 = True
+
+    # ================
+    # Main inner loop
+    # ================
 
     while play_room1:
         print("1) Fight the enemy\n" +
@@ -112,56 +149,16 @@ def Room1(): # enter the room No1
 
 
         if user_room_choose == "1": # fight an enemy
-            
-            the_weapon_exist = False # if the weapon was chosen right
-            the_armour_exist = False # if the armour was chosen right
-            
-            # weapon choose
-            print("\nChoose your weapon:\n")
-            for items in range(len(inventory["Weapons"])):
-                print(inventory["Weapons"][items])
-
-            user_weapon = input("Enter the name of your weapon\n>> ")
-
-            for item in inventory["Weapons"]: 
-                if item["name"] == user_weapon:
-                    print("You have chosen ", item, " as a weapon\n")
-                    the_weapon_exist = True
-
-            if the_weapon_exist == False: # checks for equiped weapon
-                print("There is no such a weapon")
-
-
-            # armour choose
-            user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
-
-            if user_use_armour == "y": 
-                print("Choose your armour by its durability:\n")
-                for items in range(len(inventory["Armours"])):
-                    print(inventory["Armours"][items])
-
-                try:
-                    user_armour = int(input("Enter the durability of your armour\n>> "))
-                    for item in inventory["Armours"]:
-                        if item["Durability"] == user_armour:
-                            print("You have chosen ", item, " as an armour\n")
-                            the_armour_exist = True
-
-                    if the_armour_exist == False: # checks for equiped armour
-                        print("\nThere is no such an armour\n")
+            if enemy_alive1:
+                if choose_equipment(r1, enemy_info1, weapon_dmg, armour_dur) == True:
+                    enemy_alive1 = False
                 
-                except: print("\nThere is no such an armour\n")
+                else: play_room1 = False
 
-            elif user_use_armour == "n": print("\nYou will fight without an armour\n")
+            else: print("\nYou have already defeated the enemy in this room\n")
+            
 
-            else: print("\nWrong input\n")
-
-
-            if the_weapon_exist == False: # do not let the user fight without the weapon
-                print("You CANNOT fight without a weapon\n")
-
-
-            # elif the_weapon_exist == True:            
+            pass              
 
 
         elif user_room_choose == "2": # open chest
@@ -213,19 +210,35 @@ def Room1(): # enter the room No1
     pass
 #----------------------------
 def Room2(): # enter the room No2
-    global health, point, opened_chest2
+    global health, point, enemy_info2, enemy_alive2, opened_chest2
+    
     
     r2 = open("Room2.txt", "r").readlines() 
-    print("\n------------------------")
-    print(r2[0], 
-          r2[1],
-          "\n", r2[3], r2[4])
-
-    enemy = r2[4].strip().split(",") # enemy info
-    armour = 1 # user's armour
     
+    # figting enemy variables
+    # enemy_info2 = r2[4].strip().split(",") # enemy info
+    armour_dur = 1 # user's armour
+    weapon_dmg = 0
+   
+
+
+    print("\n------------------------")
+    print(r2[0], r2[1])
+    
+    if enemy_alive2:
+        print(r2[3])
+        print("\033[A\033[A")
+        print(*enemy_info2, sep=",")
+        print()
+    else: print("There is no danger in these lands\n")
+
+
     play_room2 = True
 
+    # ================
+    # Main inner loop
+    # ================
+    
     while play_room2:
         print("1) Fight the enemy\n" +
             "2) Open chest\n" + 
@@ -235,61 +248,15 @@ def Room2(): # enter the room No2
 
 
         if user_room_choose == "1": # fight an enemy
-            the_weapon_exist = False # if the weapon was chosen right
-            the_armour_exist = False # if the armour was chosen right
-            
-            # weapon choose
-            print("\nChoose your weapon:\n")
-            for items in range(len(inventory["Weapons"])):
-                print(inventory["Weapons"][items])
+            if enemy_alive2:
+                if choose_equipment(r2, enemy_info2, weapon_dmg, armour_dur) == True:
+                    enemy_alive2 = False
+              
+                else: play_room2 = False
 
-            user_weapon = input("Enter the name of your weapon\n>> ")
+            else: print("\nYou have already defeated the enemy in this room\n")
 
-            for item in inventory["Weapons"]: 
-                if item["name"] == user_weapon:
-                    print("You have chosen ", item, " as a weapon\n")
-                    weapon = item["damage"]
-                    the_weapon_exist = True
-
-            if the_weapon_exist == False: # checks for equiped weapon
-                print("There is no such a weapon")
-
-
-            # armour choose
-            user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
-
-            if user_use_armour == "y": 
-                print("Choose your armour by its durability:\n")
-                for items in range(len(inventory["Armours"])):
-                    print(inventory["Armours"][items])
-
-                try:
-                    user_armour = int(input("Enter the durability of your armour\n>> "))
-                    for item in inventory["Armours"]:
-                        if item["Durability"] == user_armour:
-                            print("You have chosen ", item, " as an armour\n")
-                            armour = inventory["Armours"]["Durability"]
-                            the_armour_exist = True
-
-                    if the_armour_exist == False: # checks for equiped armour
-                        print("\nThere is no such an armour\n")
-                
-                except: print("\nThere is no such an armour\n")
-
-            elif user_use_armour == "n": print("\nYou will fight without an armour\n")
-
-            else: print("\nWrong input\n")
-
-
-            if the_weapon_exist == False:
-                print("You CANNOT fight without a weapon\n")
-
-            
-            elif the_weapon_exist == True:
-                battle(r2, enemy, weapon, armour)
-
-
-            
+  
             pass
 
 
@@ -343,18 +310,32 @@ def Room2(): # enter the room No2
     pass
 #----------------------------
 def Room3(): # enter the room No3
-    global health, point 
+    global health, point, enemy_info3, enemy_alive3 
     
     r3 = open("Room3.txt", "r").readlines() 
     
     healPad = int(r3[16])
 
+    # figting enemy variables
+    armour_dur = 1 # user's armour
+    weapon_dmg = 0
+
+
     print("\n------------------------")
-    print(r3[0], 
-          r3[1],
-          "\n", r3[3], r3[4])
+    print(r3[0], r3[1])
+
+    if enemy_alive3:
+        print(r3[3])
+        print("\033[A\033[A")
+        print(*enemy_info3, sep=",")
+        print()
+    else: print("There is no danger in these lands\n")
 
     play_room3 = True
+
+    # ================
+    # Main inner loop
+    # ================
 
     while play_room3:
         print("1) Fight the enemy\n" +
@@ -365,55 +346,13 @@ def Room3(): # enter the room No3
 
 
         if user_room_choose == "1": # fight an enemy
-            the_weapon_exist = False # if the weapon was chosen right
-            the_armour_exist = False # if the armour was chosen right
-            
-            # weapon choose
-            print("\nChoose your weapon:\n")
-            for items in range(len(inventory["Weapons"])):
-                print(inventory["Weapons"][items])
-
-            user_weapon = input("Enter the name of your weapon\n>> ")
-
-            for item in inventory["Weapons"]: 
-                if item["name"] == user_weapon:
-                    print("You have chosen ", item, " as a weapon\n")
-                    the_weapon_exist = True
-
-            if the_weapon_exist == False: # checks for equiped weapon
-                print("There is no such a weapon")
-
-
-            # armour choose
-            user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
-
-            if user_use_armour == "y": 
-                print("Choose your armour by its durability:\n")
-                for items in range(len(inventory["Armours"])):
-                    print(inventory["Armours"][items])
-
-                try:
-                    user_armour = int(input("Enter the durability of your armour\n>> "))
-                    for item in inventory["Armours"]:
-                        if item["Durability"] == user_armour:
-                            print("You have chosen ", item, " as an armour\n")
-                            the_armour_exist = True
-
-                    if the_armour_exist == False: # checks for equiped armour
-                        print("\nThere is no such an armour\n")
+            if enemy_alive3:
+                if choose_equipment(r3, enemy_info3, weapon_dmg, armour_dur) == True:
+                    enemy_alive3 = False
                 
-                except: print("\nThere is no such an armour\n")
-
-            elif user_use_armour == "n": print("\nYou will fight without an armour\n")
-
-            else: print("\nWrong input\n")
-
-
-            if the_weapon_exist == False:
-                print("You CANNOT fight without a weapon\n")
-
-            
-            # elif the_weapon_exist == True:
+                else: play_room3 = False
+                
+            else: print("\nYou have already defeated the enemy in this room\n")
     
 
         elif user_room_choose == "2": # use healingPad
@@ -445,18 +384,32 @@ def Room3(): # enter the room No3
     pass
 #----------------------------
 def Room4(): # enter the room No4
-    global health, point, opened_chest4
+    global health, point, enemy_info4, enemy_alive4, opened_chest4
     
     r4 = open("Room4.txt", "r").readlines() 
     
     healPad = int(r4[16])
     
+    # figting enemy variables
+    armour_dur = 1 # user's armour
+    weapon_dmg = 0
+   
+
     print("\n------------------------")
-    print(r4[0], 
-          r4[1],
-          "\n", r4[3], r4[4])
+    print(r4[0], r4[1])
+    
+    if enemy_alive1:
+        print(r4[3])
+        print("\033[A\033[A")
+        print(*enemy_info4, sep=",")
+        print()
+    else: print("There is no danger in these lands\n")
 
     play_room4 = True
+
+    # ================
+    # Main inner loop
+    # ================
 
     while play_room4:
         print("1) Fight the enemy\n" +
@@ -468,55 +421,13 @@ def Room4(): # enter the room No4
 
 
         if user_room_choose == "1": # fight the enemy
-            the_weapon_exist = False # if the weapon was chosen right
-            the_armour_exist = False # if the armour was chosen right
-            
-            # weapon choose
-            print("\nChoose your weapon:\n")
-            for items in range(len(inventory["Weapons"])):
-                print(inventory["Weapons"][items])
-
-            user_weapon = input("Enter the name of your weapon\n>> ")
-
-            for item in inventory["Weapons"]: 
-                if item["name"] == user_weapon:
-                    print("You have chosen ", item, " as a weapon\n")
-                    the_weapon_exist = True
-
-            if the_weapon_exist == False: # checks for equiped weapon
-                print("There is no such a weapon")
-
-
-            # armour choose
-            user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
-
-            if user_use_armour == "y": 
-                print("Choose your armour by its durability:\n")
-                for items in range(len(inventory["Armours"])):
-                    print(inventory["Armours"][items])
-
-                try:
-                    user_armour = int(input("Enter the durability of your armour\n>> "))
-                    for item in inventory["Armours"]:
-                        if item["Durability"] == user_armour:
-                            print("You have chosen ", item, " as an armour\n")
-                            the_armour_exist = True
-
-                    if the_armour_exist == False: # checks for equiped armour
-                        print("\nThere is no such an armour\n")
+            if enemy_alive4:
+                if choose_equipment(r4, enemy_info1, weapon_dmg, armour_dur) == True:
+                    enemy_alive4 = False
                 
-                except: print("\nThere is no such an armour\n")
+                else: play_room4 = False
 
-            elif user_use_armour == "n": print("\nYou will fight without an armour\n")
-
-            else: print("\nWrong input\n")
-
-
-            if the_weapon_exist == False:
-                print("You CANNOT fight without a weapon\n")
-
-            
-            # elif the_weapon_exist == True:
+            else: print("\nYou have already defeated the enemy in this room\n")
 
             
             pass
@@ -602,7 +513,7 @@ def Shop(): # enter the shop
             "2) Key\n" + 
             "3) HealingPad\n" + 
             "4) Armour\n" +
-            "5) Continue the adventure")
+            "6) Continue the adventure")
         
 
         try:
@@ -747,7 +658,10 @@ def Shop(): # enter the shop
                     print("\nI do not have the thing you are asking for\n")
 
 
-            elif user_buy == 5: # exit shop
+            elif user_buy == 5: # sell items
+                selling = True
+
+            elif user_buy == 6: # exit shop
                 print("Thanks for visiting the shop\n")
                 play_shop = False
             
@@ -794,27 +708,108 @@ def battle(my_file, enemy, weapon, armour): # battle function
     enemy_hp = int(enemy[-1])
     enemy_dmg = int(enemy[1])
 
+    animation_loading()
+
     while (enemy_hp > 0) or (health > 0):
         enemy_hp -= weapon
-        health -= (enemy_dmg//armour)
-
+        
         if enemy_hp <= 0: # user has won
             print("\nYou have defeated the enemy\n")
             point += int(my_file[7])
             money += int(my_file[13])
             change_labels(health, money, point)
             add_item(my_file[10], "w")
-            break
+            gained_weapon = my_file[10].strip().split(",")
 
-        elif health <= 0: # user has lost
+            print("You feel how you getting stronger\nYour mother will be prowd of you\nOh, it seems he dropped something!")
+            print("+", point, "points", "\n+", money, "money", "\nThe", gained_weapon[0], "was added to your inventory\n")
+            return True
+            break
+        
+
+        health -= (enemy_dmg//armour)
+
+        if health <= 0: # user has lost
             print("\nYou lost the battle\n")
             health = 0
             point -= 2
-            change_labels(health, money, point)
-            break
+            enemy[-1] = enemy_hp
             
+            change_labels(health, money, point)
+
+            print("You were kicked out from the city after humilating defeat\nYou have lost you pride and used equipment\nIt is better to go home and heal\n")
+            print("-2 points\nyour hp is 0\n")
+            return False
+            break
+#----------------------------          
+def choose_equipment(my_file, enemy, weapon, armour): # choose weapon and armour for the battle
+    the_weapon_exist = False # if the weapon was chosen right
+    the_armour_exist = False # if the armour was chosen right
+    
+    # weapon choose
+    print("\nChoose your weapon:\n")
+    for items in range(len(inventory["Weapons"])):
+        print(inventory["Weapons"][items])
+
+    user_weapon = input("Enter the name of your weapon\n>> ")
+
+    for idx, item in enumerate(inventory["Weapons"]): 
+        if item["name"] == user_weapon:
+            print("You have chosen ", item, " as a weapon\n")
+            weapon = item["damage"]
+            the_weapon_exist = True
+            del inventory["Weapons"][idx]
+
+    if the_weapon_exist == False: # checks for equiped weapon
+        print("There is no such a weapon")
 
 
+    # armour choose
+    user_use_armour = input("\nDo you want to use armour? (y/n)\n>> ")
+
+    if user_use_armour == "y": 
+        print("Choose your armour by its durability:\n")
+        for items in range(len(inventory["Armours"])):
+            print(inventory["Armours"][items])
+
+        # try:
+            user_armour = int(input("Enter the durability of your armour\n>> "))
+            for idx, item in enumerate(inventory["Armours"]):
+                if item["Durability"] == user_armour:
+                    print("You have chosen ", item, " as an armour\n")
+                    armour = item["Durability"]
+                    the_armour_exist = True
+                    del inventory["Armours"][idx]
+
+            if the_armour_exist == False: # checks for equiped armour
+                print("\nThere is no such an armour\n")
+        
+        # except: print("\nThere is no such an armour\n")
+
+    elif user_use_armour == "n": print("\nYou will fight without an armour\n")
+
+    else: print("\nWrong input\n")
+
+
+    if the_weapon_exist == False: # do not let the user fight without the weapon
+        print("You CANNOT fight without a weapon\n")
+    
+    elif the_weapon_exist == True:
+        if battle(my_file, enemy, weapon, armour) == True:
+            return True
+        else: return False
+#----------------------------          
+def animation_loading(): # loading animation
+    animation = "|/-\\"
+    idx = 0
+    timer = 0
+    anim_len = len(animation)
+    while timer < 2:
+        selected_anim = animation[idx % anim_len]
+        print(selected_anim, end="\r")
+        idx += 1
+        time.sleep(0.1)
+        timer += 0.10
 
 
 # ---------------------------------------------------------------
