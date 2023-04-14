@@ -26,7 +26,7 @@ enemy_alive3 = True
 
 # inventory = {"Weapons":[], "Keys":[], "Armours":[]}
 
-inventory = {"Weapons":[{"name":"fork", "damage":15, "price":0}, {"name":"fist", "damage":3, "price":-1}], 
+inventory = {"Weapons":[{"name":"fork", "damage":15, "price":10}, {"name":"fist", "damage":3, "price":-1}], 
              "Keys":[{"code":1, "price":100}, {"code":0, "price":100}], 
              "Armours":[{"Durability":2, "price":50}]}
 
@@ -513,160 +513,238 @@ def Shop(): # enter the shop
             "2) Key\n" + 
             "3) HealingPad\n" + 
             "4) Armour\n" +
+            "5) Sell items\n" + 
             "6) Continue the adventure")
         
 
-        try:
-            user_buy = int(input("\nChoose what you would like to buy, stranger\n>> "))
+        
+        user_buy = input("\nChoose what you would like to buy, stranger\n>> ")
 
-            if user_buy == 1: # buy weapons
-                print(*shop_weapon, sep="\n")
-                user_weapon_choose = input("\nWhich of them you liked the most?\n>> ")
-                if user_weapon_choose == "1" or user_weapon_choose == "weapon1":
-                    if money >= 50:
-                            money -= 50
-                            change_labels(health, money, point)
-                            add_item("knife,10,50", "w")
-                            shop_weapon.remove("weapon1:knife,10,50")
-
-                            print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-
-                elif user_weapon_choose == "2" or user_weapon_choose == "weapon2":
-                    if money >= 150:
-                        money -= 150
+        if user_buy == "1": # buy weapons
+            print(*shop_weapon, sep="\n")
+            user_weapon_choose = input("\nWhich of them you liked the most?\n>> ")
+            if user_weapon_choose == "1" or user_weapon_choose == "weapon1":
+                if money >= 50:
+                        money -= 50
                         change_labels(health, money, point)
-                        add_item("rifle,30,150", "w")
-                        shop_weapon.remove("weapon2:rifle,30,150")
+                        add_item("knife,10,50", "w")
+                        shop_weapon.remove("weapon1:knife,10,50")
 
                         print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
+                else:
+                    print("\nNot enough cash\n")
 
-                elif user_weapon_choose == "3" or user_weapon_choose == "weapon3":
-                    if money >= 100:    
+            elif user_weapon_choose == "2" or user_weapon_choose == "weapon2":
+                if money >= 150:
+                    money -= 150
+                    change_labels(health, money, point)
+                    add_item("rifle,30,150", "w")
+                    shop_weapon.remove("weapon2:rifle,30,150")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+
+            elif user_weapon_choose == "3" or user_weapon_choose == "weapon3":
+                if money >= 100:    
+                    money -= 100
+                    change_labels(health, money, point)
+                    add_item("pistol,20,100", "w")
+                    shop_weapon.remove("weapon3:pistol,20,100")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+                
+            elif user_weapon_choose == "4" or user_weapon_choose == "weapon4":
+                if money >= 300:
+                    money -= 300
+                    change_labels(health, money, point)
+                    add_item("bomb,50,300", "w")
+                    shop_weapon.remove("weapon4:bomb,50,300")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+                
+            elif user_weapon_choose == "5" or user_weapon_choose == "weapon5":
+                if money >= 250:    
+                    money -= 250
+                    change_labels(health, money, point)
+                    add_item("sniper,40,250", "w")
+                    shop_weapon.remove("weapon5:sniper,40,250")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+
+
+            else: print("\nThere is no such an item\nLook wisely")
+
+
+        elif user_buy == "2": # buy keys
+            print(*shop_keys, sep="\n")
+            user_key_choose = input("\nWould you like to buy this key? (y/n)\n>> ")
+
+            if user_key_choose == "y":
+                if money >= 300:
+                    money -= 300
+                    change_labels(health, money, point)
+                    add_item("0,300", "k")
+                    shop_keys.remove("key:0,300")
+                    
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+
+            elif user_key_choose == "n":
+                print("\nAs you wish!\nBut still take a look on the other items\n")
+            
+            else:
+                print("\nDid not understand you\n")
+                    
+
+        elif user_buy == "3": # HealingPad
+            if heal_left > 0:
+                print("\n", *shop_heal[0], sep="")
+                print("HealingPads left: ", heal_left)
+                user_heal_choose = input("\nWould you like to buy the HelingPad? (y/n)\n>> ")
+
+                if user_heal_choose == "y":
+                    if money >= 100:
                         money -= 100
+                        health += 50
                         change_labels(health, money, point)
-                        add_item("pistol,20,100", "w")
-                        shop_weapon.remove("weapon3:pistol,20,100")
-
-                        print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-                    
-                elif user_weapon_choose == "4" or user_weapon_choose == "weapon4":
-                    if money >= 300:
-                        money -= 300
-                        change_labels(health, money, point)
-                        add_item("bomb,50,300", "w")
-                        shop_weapon.remove("weapon4:bomb,50,300")
-
-                        print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-                    
-                elif user_weapon_choose == "5" or user_weapon_choose == "weapon5":
-                    if money >= 250:    
-                        money -= 250
-                        change_labels(health, money, point)
-                        add_item("sniper,40,250", "w")
-                        shop_weapon.remove("weapon5:sniper,40,250")
+                        heal_left -= 1 
 
                         print("\nThanks for purchase\n")
                     else:
                         print("\nNot enough cash\n")
 
-
-                else: print("\nThere is no such an item\nLook wisely")
-
-
-            elif user_buy == 2: # buy keys
-                print(*shop_keys, sep="\n")
-                user_key_choose = input("\nWould you like to buy this key? (y/n)\n>> ")
-
-                if user_key_choose == "y":
-                    if money >= 300:
-                        money -= 300
-                        change_labels(health, money, point)
-                        add_item("0,300", "k")
-                        shop_keys.remove("key:0,300")
-                        
-                        print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-
-                elif user_key_choose == "n":
-                    print("\nAs you wish!\nBut still take a look on the other items\n")
+                elif user_heal_choose == "n":
+                    print("\nBe careful then!\n")
                 
-                else:
-                    print("\nDid not understand you\n")
-                        
+                else: print("\nDidn't understand you\n")
 
-            elif user_buy == 3: # HealingPad
-                if heal_left > 0:
-                    print("\n", *shop_heal[0], sep="")
-                    print("HealingPads left: ", heal_left)
-                    user_heal_choose = input("\nWould you like to buy the HelingPad? (y/n)\n>> ")
-
-                    if user_heal_choose == "y":
-                        if money >= 100:
-                            money -= 100
-                            health += 50
-                            change_labels(health, money, point)
-                            heal_left -= 1 
-
-                            print("\nThanks for purchase\n")
-                        else:
-                            print("\nNot enough cash\n")
-
-                    elif user_heal_choose == "n":
-                        print("\nBe careful then!\n")
-                    
-                    else: print("\nDidn't understand you\n")
-
-                else: print("\nSorry but you have bought all I had\n")
-                
-
-            elif user_buy == 4: # Armour
-                print(*shop_armour, sep="\n")
-                user_armour_choose = input("\nWhich armour do you prefer?\n>> ")
-
-                if user_armour_choose == "1": # choose armour 1
-                    if money >= 200:
-                        money -= 200
-                        change_labels(health, money, point)
-                        add_item("2,200", "a")
-                        shop_armour.remove("armour1:2,200")
-
-                        print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-
-                elif user_armour_choose == "2": # choose armour 2
-                    if money >= 400:
-                        money -= 400
-                        change_labels(health, money, point)
-                        add_item("3,400", "a")
-                        shop_armour.remove("armour2:3,400")
-
-                        print("\nThanks for purchase\n")
-                    else:
-                        print("\nNot enough cash\n")
-                
-                else:
-                    print("\nI do not have the thing you are asking for\n")
-
-
-            elif user_buy == 5: # sell items
-                selling = True
-
-            elif user_buy == 6: # exit shop
-                print("Thanks for visiting the shop\n")
-                play_shop = False
+            else: print("\nSorry but you have bought all I had\n")
             
 
-        except: print("\nDid not get what you have wanted, repeat please\n")
+        elif user_buy == "4": # Armour
+            print(*shop_armour, sep="\n")
+            user_armour_choose = input("\nWhich armour do you prefer?\n>> ")
+
+            if user_armour_choose == "1": # choose armour 1
+                if money >= 200:
+                    money -= 200
+                    change_labels(health, money, point)
+                    add_item("2,200", "a")
+                    shop_armour.remove("armour1:2,200")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+
+            elif user_armour_choose == "2": # choose armour 2
+                if money >= 400:
+                    money -= 400
+                    change_labels(health, money, point)
+                    add_item("3,400", "a")
+                    shop_armour.remove("armour2:3,400")
+
+                    print("\nThanks for purchase\n")
+                else:
+                    print("\nNot enough cash\n")
+            
+            else:
+                print("\nI do not have the thing you are asking for\n")
+
+
+        elif user_buy == "5": # sell items
+            selling = True
+
+            while selling:
+                Inventory()
+                user_sell = input("\nWhich items you want to sell, stranger?\nCommands: <weapons> | <keys> | <armours>| <nothing>\n>> ")
+
+                if user_sell == "weapons": # sell weapons
+                    user_sell_weapon = input("\nWhich of them are you ready to sell? <enter the name of the weapon>\n>> ")
+                    
+                    for idx, item in enumerate(inventory["Weapons"]): 
+                        if item["name"] == user_sell_weapon.lower():
+                            print("You have chosen to sell", item["name"], "for", item["price"], "? (y/n)")
+                            user_confirm = input(">> ")
+                            
+                            if user_confirm == "y":
+                                money += item["price"]
+                                change_labels(health, money, point)
+                                print("\nIt's a deal then\n", item["name"], "was removed from your inventory\n+", item["price"], "money\n")
+                                del inventory["Weapons"][idx]
+
+                            elif user_confirm == "n":
+                                print("\nOkay, but don't argue if I won't buy it next time\n")
+
+                            else: print("\nDid not understood you\n")
+
+                        else: print("\nNah, don't see the thing you named in your backpack\n")
+                                
+
+                elif user_sell == "keys": # sell keys
+                    user_sell_key = input("\nWhich key do you want to sell? <Enter key's place number>\n>> ")
+
+                    for idx in range(len(inventory["Keys"])): 
+                        if idx == int(user_sell_key) - 1:
+                            print("You have chosen to sell", inventory["Keys"][idx], "for", inventory["Keys"][idx]["price"], "money? (y/n)")
+                            user_confirm = input(">> ")
+                            
+                            if user_confirm == "y":
+                                money += inventory["Keys"][idx]["price"]
+                                change_labels(health, money, point)
+                                print("\nIt's a deal then\n", inventory["Keys"][idx], "was removed from your inventory\n+", inventory["Keys"][idx]["price"], "money\n")
+                                del inventory["Keys"][idx]
+
+                            elif user_confirm == "n":
+                                print("\nIf you are not selling go better open something with it then\n")
+
+                            else: print("\nDid not understood you\n")
+
+                        else: print("\nWhat? Repeat\n")
+
+                elif user_sell == "armours": # sell armour
+                    user_sell_armour = input("\nWhich armour do you want to sell? <Enter armour's place number>\n>> ")
+
+                    for idx in range(len(inventory["Armours"])): 
+                        if idx == int(user_sell_armour) - 1:
+                            print("You have chosen to sell", inventory["Armours"][idx], "for", inventory["Armours"][idx]["price"], "money? (y/n)")
+                            user_confirm = input(">> ")
+                            
+                            if user_confirm == "y":
+                                money += inventory["Armours"][idx]["price"]
+                                change_labels(health, money, point)
+                                print("\nIt's a deal then\n", inventory["Armours"][idx], "was removed from your inventory\n+", inventory["Armours"][idx]["price"], "money\n")
+                                del inventory["Armours"][idx]
+
+                            elif user_confirm == "n":
+                                print("\nHope you will need it more than me\n")
+
+                            else: print("\nDid not understood you\n")
+
+                        else: print("\nWhich one, again?\n")
+
+                elif user_sell == "nothing":
+                    print("\nYeah, better save everything for a rainy day, hehe\n")
+                    selling = False
+                    
+                else: print("\nDid not understood you\n")
+
+
+
+
+        elif user_buy == "6": # exit shop
+            print("Thanks for visiting the shop\n")
+            play_shop = False
+        
+
+        else: print("\nDid not get what you have wanted, repeat please\n")
 
 
     pass
@@ -674,10 +752,13 @@ def Shop(): # enter the shop
 def Inventory(): # show inventory
     global inventory
 
+    print("<-------------------------->")
     for key in inventory.keys():
         print("\nList of", key)
         for item in inventory[key]:
             print(item)
+    print("\n<-------------------------->")
+
 
     pass
 #----------------------------
