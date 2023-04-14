@@ -171,17 +171,18 @@ def Room1(): # enter the room No1
             
             if opened_chest1 == False: # checks if the chest was already opened
                 if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory) - 1): 
+                    for i in range(len(inventory["Keys"])): 
                         if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
                             print("You have the key open the chest\n")
                             user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
                                 
                             if user_open_chest == "y":
-                                inventory["Keys"][i] = []
+                                del inventory["Keys"][i]
                                 point += int(chest_code[2])
                                 change_labels(health, money, point)
                                 opened_chest1 = True
-                                print("\nYou have successfully opened the chest\n")                                         
+                                print("\nYou have successfully opened the chest\n") 
+                                break                                        
 
                             elif user_open_chest == "n":
                                 print("")
@@ -288,18 +289,19 @@ def Room2(): # enter the room No2
             
             if opened_chest2 == False: # checks if the chest was already opened
                 if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory) - 1): 
+                    for i in range(len(inventory["Keys"])): 
                         if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
                             print("You have the key open the chest\n")
                             user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
                                 
                             if user_open_chest == "y":
-                                inventory["Keys"][i] = []
+                                del inventory["Keys"][i]
                                 point += int(chest_code[2])
                                 change_labels(health, money, point)
                                 opened_chest2 = True
                                 print("\nYou have successfully opened the chest\n")
-                                                    
+                                break
+
                             elif user_open_chest == "n":
                                 print("")
 
@@ -317,6 +319,10 @@ def Room2(): # enter the room No2
             print("\nYou have escaped successfully")
             play_room2 = False
     
+    
+    print("------------------------")
+
+
     pass
 #----------------------------
 def Room3(): # enter the room No3
@@ -415,6 +421,10 @@ def Room3(): # enter the room No3
             print("\nYou have escaped successfully")
             play_room3 = False
     
+
+    print("------------------------")
+
+
     pass
 #----------------------------
 def Room4(): # enter the room No4
@@ -502,17 +512,18 @@ def Room4(): # enter the room No4
             
             if opened_chest4 == False: # checks if the chest was already opened
                 if len(inventory["Keys"]) != 0:
-                    for i in range(len(inventory) - 1): 
+                    for i in range(len(inventory["Keys"])): 
                         if inventory["Keys"][i]["code"] == int(chest_code[0]): # checks if user can open the chest
                             print("You have the key open the chest\n")
                             user_open_chest = input("Do you want to open a chest and obtain prize (y/n)\n>> ")
                                 
                             if user_open_chest == "y":
-                                inventory["Keys"][i] = []
+                                del inventory["Keys"][i]
                                 point += int(chest_code[2])
                                 change_labels(health, money, point)
                                 opened_chest4 = True
                                 print("\nYou have successfully opened the chest\n")
+                                break
                                                     
                             elif user_open_chest == "n":
                                 print("")
@@ -548,6 +559,9 @@ def Room4(): # enter the room No4
         elif user_room_choose == "4": # exit room
             print("\nYou have escaped successfully")
             play_room4 = False
+
+    
+    print("------------------------")
 
     
     pass
